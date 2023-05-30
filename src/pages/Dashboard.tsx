@@ -27,7 +27,7 @@ const Dashboard = () => {
               <CardBody overflowY="scroll" maxH="25rem" >
                 <VStack spacing="5" w="100%" >
                   {[1,2,3,4,5].map((item)=>(
-                    <Task/>
+                    <Task page="Dashboard" title="Ability to define custom indexes in the schema" subtitle="DEVELOPER EXPERIENCE" />
                   ))}  
                 </VStack>
                 
@@ -41,7 +41,7 @@ const Dashboard = () => {
             <CardBody overflowY="scroll" maxH="25rem" >
                 <VStack spacing="5" w="100%" >
                   {[1,2,3,4,5].map((item)=>(
-                    <Task/>
+                    <Task page="Dashboard" title="Ability to define custom indexes in the schema" subtitle="DEVELOPER EXPERIENCE" />
                   ))}  
                 </VStack>
                 
@@ -55,7 +55,7 @@ const Dashboard = () => {
             <CardBody overflowY="scroll" maxH="25rem" >
                 <VStack spacing="5" w="100%" >
                   {[1,2,3,4,5].map((item)=>(
-                    <Task/>
+                    <Task page="Dashboard" title="Ability to define custom indexes in the schema" subtitle="DEVELOPER EXPERIENCE" />
                   ))}  
                 </VStack>
                 
