@@ -1,21 +1,29 @@
-import { Flex, Card, CardBody, HStack, CardHeader, Circle, Heading, VStack, Square, Text } from "@chakra-ui/react";
+import { Flex, Card, CardBody, HStack, CardHeader, Circle, Heading, VStack, Square, Text, Spinner } from "@chakra-ui/react";
 import Task from "../components/Task";
+import { useContext } from "react";
+import { projectsContext } from "../providers/projects";
 
 const Dashboard = () => {
+
+    const {projects, projectsLoading} = useContext(projectsContext);
+
     return(
         <>
         <Text color="rgb(134, 132, 141)" mb="10px" fontSize="15px" fontWeight="bold" >Projects</Text>
         <Flex wrap="wrap" mb="50px" >
-          {[1,2,3,4,5,6].map((item)=>(
-            <Card border="1px solid" minW="19.1rem" mr="6" mb="5" borderColor="rgb(228, 226, 228)" boxShadow="none" >
-              <CardBody py="12px" px="16px" >
-                <Flex w="100%" justifyContent="space-between" alignItems="center" >
-                  <Text fontWeight="semibold" >Content Editing XP</Text>
-                  <Text color="#6f6e77" fontSize="xs" fontWeight="bold" >115</Text>
-                </Flex>
-              </CardBody>
-            </Card>
-          ))}
+          {projectsLoading ? 
+            <Spinner margin="0 auto" mb="10rem" />
+              :
+              projects.map((item)=>(
+                <Card border="1px solid" minW="19.1rem" mr="6" mb="5" borderColor="rgb(228, 226, 228)" boxShadow="none" >
+                  <CardBody py="12px" px="16px" >
+                    <Flex w="100%" justifyContent="space-between" alignItems="center" >
+                      <Text fontWeight="semibold" >{item?.name}</Text>
+                      <Text color="#6f6e77" fontSize="xs" fontWeight="bold" >{item?.Tasks?.length}</Text>
+                    </Flex>
+                  </CardBody>
+                </Card>
+              ))} 
         </Flex>
         <Text color="rgb(134, 132, 141)" mb="10px" fontSize="15px" fontWeight="bold" >Status</Text>
         <HStack alignItems="flex-start" >     

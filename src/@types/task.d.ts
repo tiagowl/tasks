@@ -1,3 +1,4 @@
+import { Project } from "./project";
 import { Subtask } from "./subtask";
 
 export interface Task{
@@ -7,4 +8,5 @@ export interface Task{
     project_id: number;
     status_id: number;
     Subtasks: Subtask[];
+    Projetcs: Project[];
 }
