@@ -1,4 +1,4 @@
-import { Flex, Card, CardBody, HStack, CardHeader, Circle, Heading, VStack, Text, Spinner, Button } from "@chakra-ui/react";
+import { Flex, Card, CardBody, HStack, CardHeader, Circle, Heading, VStack, Text, Spinner, Button, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import Task from "../components/Task";
 import { useEffect, useState } from "react";
 import { TaskData } from "../@types/task";
@@ -13,6 +13,8 @@ const Dashboard = () => {
     const [tasks, setTasks] = useState<TaskData[]>();
     const [projects, setProjects] = useState<Project[]>();
     const navigate = useNavigate();
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [payload, setPayload] = useState<Partial<Project>>({name: ""});
 
     const fetchProjects = async() => {
       setLoading(true);
@@ -51,6 +53,20 @@ const Dashboard = () => {
     }
   }
 
+  const createProject = async() => {
+    setLoading(true);
+    const { data, error } = await supabase
+    .from('Projects')
+    .insert([
+      payload,
+    ])
+    if(!error){
+      fetchProjects();
+      setLoading(false);
+      onClose();
+    }
+  }
+
   const PlannedTasks = tasks?.filter((item)=> item?.status_id === 1);
   const InProgessTasks = tasks?.filter((item)=> item?.status_id === 2);
   const CompleteTasks = tasks?.filter((item)=> item?.status_id === 3);
@@ -64,7 +80,7 @@ const Dashboard = () => {
         <>
         <Flex w="100%" justifyContent="space-between" pr="7" mb="2">
           <Text color="rgb(134, 132, 141)" mb="10px" fontSize="15px" fontWeight="bold" >Projects</Text>
-          <Button leftIcon={<AddIcon/>} size="sm" bg="rgb(73, 69, 255)" color="white" fontSize="xs" fontWeight="bold" >CREATE PROJECT</Button>
+          <Button onClick={onOpen} leftIcon={<AddIcon/>} size="sm" bg="rgb(73, 69, 255)" color="white" fontSize="xs" fontWeight="bold" >CREATE PROJECT</Button>
         </Flex>
         <Flex wrap="wrap" mb="50px" >
           {loading ? <Spinner margin="0 auto" mb="10rem" /> :
@@ -127,6 +143,23 @@ const Dashboard = () => {
               </CardBody>
           </Card>
         </HStack>}
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Create Project</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <Input value={payload.name} onChange={(e)=>setPayload({...payload, name: e.target.value})} type='text' />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button isLoading={loading} onClick={createProject} bg="rgb(73, 69, 255)" fontSize="sm" color="white" variant='ghost'>CREATE PROJECT</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         </>
     )
 }
