@@ -1,10 +1,10 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { Task } from "../@types/task";
+import { TaskData } from "../@types/task";
 import supabase from "../services/supabase";
 
 export interface TasksData{
     tasksLoading: boolean;
-    tasks: Task[] | Task;
+    tasks: TaskData[] | TaskData;
     fetchTasks: ()=> Promise<void>;
     fetchTask: (id: number) =>Promise<void>;
 }
@@ -22,7 +22,7 @@ interface Props{
 
 export default function TasksProvider(props:Props){
 
-    const [tasks, setTasks] = useState<Task[] | Task>();
+    const [tasks, setTasks] = useState<TaskData[] | TaskData>();
     const [tasksLoading, setLoading] = useState(false);
 
     const fetchTasks = async() => {
@@ -39,7 +39,7 @@ export default function TasksProvider(props:Props){
         )
         `)
         if(data){
-            setTasks(data as unknown as Task[])
+            setTasks(data as unknown as TaskData[])
             setLoading(false);
         }
     }
@@ -56,7 +56,7 @@ export default function TasksProvider(props:Props){
         `)
         .eq('id', `${id}`)
         if(Tasks){
-            setTasks(Tasks[0] as Task)
+            setTasks(Tasks[0] as TaskData)
             setLoading(false);
         }
     }
@@ -66,7 +66,7 @@ export default function TasksProvider(props:Props){
     }, [])
 
     return(
-        <tasksContext.Provider value={{fetchTasks, tasks: tasks as Task[] | Task, tasksLoading, fetchTask}} >
+        <tasksContext.Provider value={{fetchTasks, tasks: tasks as TaskData[] | TaskData, tasksLoading, fetchTask}} >
             {props.children}
         </tasksContext.Provider>
     )

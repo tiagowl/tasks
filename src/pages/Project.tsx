@@ -1,8 +1,44 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Flex, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, InputGroup, InputLeftElement, Select, Text, VStack } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Flex, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, InputGroup, InputLeftElement, Select, Spinner, Text, VStack } from "@chakra-ui/react";
 import Task from "../components/Task";
 import { SearchIcon } from "@chakra-ui/icons";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { TaskData } from "../@types/task";
+import supabase from "../services/supabase";
 
 const Project = () => {
+
+    const {id} = useParams();
+    const [tasks, setTasks] = useState<TaskData[]>();
+    const [loading, setLoading] = useState(false);
+
+    const fetchTasks = async() => {
+        setLoading(true);
+        let { data: Tasks, error } = await supabase
+        .from('Tasks')
+        .select(`
+        *,
+        Status (
+          id,
+          name
+        ),
+        Subtasks(
+            id
+        )
+      `)
+        .eq('project_id', `${id}`);
+        if(Tasks){
+            setTasks(Tasks as TaskData[]);
+            setLoading(false);
+        }
+
+
+    }
+
+    useEffect(()=>{
+        fetchTasks();
+    }, [])
+
     return(
         <HStack w="100%" spacing="7" minH="100vh" maxH="auto" >
             <Flex h="100vh" alignItems="flex-start" w="30%">
@@ -40,11 +76,12 @@ const Project = () => {
                         <Input size="md" w="15rem" type='tel' placeholder='Search' />
                     </InputGroup>
                 </Flex>
+                {loading ? <Spinner m="0 auto" mt="4" /> :
                 <VStack w="100%" mt="7" spacing="5" minH="100vh" maxH="auto" >
-                    {[1,2,3,4,5,6].map((item)=>(
-                        <Task page="Project" title="Conditional fields" subtitle="It could be great to add context or let the users create their contents with little constraints. For example, a grid could have" />
+                    {tasks?.map((item)=>(
+                        <Task page="Project" title={item?.name} subtitle={item?.description} status={item?.Status?.name?.toUpperCase()} subitens={item?.Subtasks?.length} />
                     ))}
-                </VStack>
+                </VStack>}
             </Flex>
         </HStack>
     )

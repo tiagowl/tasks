@@ -11,7 +11,7 @@ function Routers(){
                 <Route path="/" element={<Main/>}>
                     <Route index element={<Dashboard/>} />
                     <Route path="project/:id" element={<Project/>} />
-                    <Route path="task/:projectId/:taskId" element={<TaskPage/>} />
+                    <Route path="task/:id/:taskId" element={<TaskPage/>} />
                 </Route>
             </Routes>
         </Router>

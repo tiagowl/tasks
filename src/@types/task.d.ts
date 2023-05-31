@@ -1,12 +1,14 @@
 import { Project } from "./project";
+import { Status } from "./status";
 import { Subtask } from "./subtask";
 
-export interface Task{
+export interface TaskData{
     id: number;
     name: string;
     description: string;
     project_id: number;
     status_id: number;
     Subtasks: Subtask[];
-    Projetcs: Project[];
+    Projects: Project;
+    Status: Status;
 }

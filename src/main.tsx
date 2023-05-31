@@ -8,11 +8,7 @@ import ProjectsProvider from './providers/projects'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider>
-      <ProjectsProvider>  
-        <TasksProvider>
-          <Routers/>
-        </TasksProvider>
-      </ProjectsProvider>
+      <Routers/>
     </ChakraProvider>
   </React.StrictMode>,
 )
