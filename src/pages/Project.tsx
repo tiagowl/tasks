@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Flex, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, InputGroup, InputLeftElement, Select, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Flex, FormControl, FormLabel, HStack, Heading, Input, InputGroup, InputLeftElement, Select, Spinner, Text, Textarea, VStack } from "@chakra-ui/react";
 import Task from "../components/Task";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
@@ -11,6 +11,7 @@ const Project = () => {
     const {id} = useParams();
     const [tasks, setTasks] = useState<TaskData[]>();
     const [loading, setLoading] = useState(false);
+    const [payload, setPayload] = useState<Partial<TaskData>>({name: "", description: "", status_id: 1, project_id: Number(id)})
 
     const fetchTasks = async() => {
         setLoading(true);
@@ -35,6 +36,20 @@ const Project = () => {
 
     }
 
+    const createTask = async() => {
+        setLoading(true);
+        const { data, error } = await supabase
+        .from('Tasks')
+        .insert([
+            payload,
+        ])
+        if(!error){
+            setLoading(false);
+            setPayload({...payload, name: "", description: ""})
+            fetchTasks();
+        }
+    }
+
     useEffect(()=>{
         fetchTasks();
     }, [])
@@ -49,13 +64,13 @@ const Project = () => {
                     <CardBody>
                     <FormControl>
                         <FormLabel fontSize="xs" color="rgb(111, 110, 119)" fontWeight="bold" >TITLE</FormLabel>
-                        <Input borderColor="rgb(228, 226, 228)" bg="white" type='email' mb="5" />
-                        <FormLabel fontSize="xs" color="rgb(111, 110, 119)" fontWeight="bold" >TITLE</FormLabel>
-                        <Input borderColor="rgb(228, 226, 228)" bg="white" type='email' />
+                        <Input value={payload.name} onChange={(e)=>setPayload({...payload, name: e.target.value})} borderColor="rgb(228, 226, 228)" bg="white" type='email' mb="5" />
+                        <FormLabel fontSize="xs" color="rgb(111, 110, 119)" fontWeight="bold" >DESCRIPTION</FormLabel>
+                        <Textarea value={payload.description} onChange={(e)=>setPayload({...payload, description: e.target.value})} borderColor="rgb(228, 226, 228)" bg="white"/>
                     </FormControl>
                     </CardBody>
                     <CardFooter display="flex" justifyContent="flex-end" >
-                    <Button bg="rgb(73, 69, 255)" color="white" fontSize="xs" fontWeight="bold" >CREATE TASK</Button>
+                        <Button isLoading={loading} onClick={createTask} bg="rgb(73, 69, 255)" color="white" fontSize="xs" fontWeight="bold" >CREATE TASK</Button>
                     </CardFooter>
                 </Card>
             </Flex>
@@ -79,7 +94,7 @@ const Project = () => {
                 {loading ? <Spinner m="0 auto" mt="4" /> :
                 <VStack w="100%" mt="7" spacing="5" minH="100vh" maxH="auto" >
                     {tasks?.map((item)=>(
-                        <Task page="Project" title={item?.name} subtitle={item?.description} status={item?.Status?.name?.toUpperCase()} subitens={item?.Subtasks?.length} />
+                        <Task page="Project" route={`/task/${id}/${item?.id}`} title={item?.name} subtitle={item?.description} status={item?.Status?.name?.toUpperCase()} subitens={item?.Subtasks?.length} />
                     ))}
                 </VStack>}
             </Flex>

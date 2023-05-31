@@ -1,10 +1,11 @@
-import { Flex, Card, CardBody, HStack, CardHeader, Circle, Heading, VStack, Text, Spinner } from "@chakra-ui/react";
+import { Flex, Card, CardBody, HStack, CardHeader, Circle, Heading, VStack, Text, Spinner, Button } from "@chakra-ui/react";
 import Task from "../components/Task";
 import { useEffect, useState } from "react";
 import { TaskData } from "../@types/task";
 import { Project } from "../@types/project";
 import supabase from "../services/supabase";
 import { useNavigate } from "react-router-dom";
+import { AddIcon } from "@chakra-ui/icons";
 
 const Dashboard = () => {
 
@@ -61,7 +62,10 @@ const Dashboard = () => {
 
     return(
         <>
-        <Text color="rgb(134, 132, 141)" mb="10px" fontSize="15px" fontWeight="bold" >Projects</Text>
+        <Flex w="100%" justifyContent="space-between" pr="7" mb="2">
+          <Text color="rgb(134, 132, 141)" mb="10px" fontSize="15px" fontWeight="bold" >Projects</Text>
+          <Button leftIcon={<AddIcon/>} size="sm" bg="rgb(73, 69, 255)" color="white" fontSize="xs" fontWeight="bold" >CREATE PROJECT</Button>
+        </Flex>
         <Flex wrap="wrap" mb="50px" >
           {loading ? <Spinner margin="0 auto" mb="10rem" /> :
           projects?.map((item)=>(
@@ -88,7 +92,7 @@ const Dashboard = () => {
               <CardBody overflowY="scroll" maxH="25rem" minH="25rem" >
                 <VStack spacing="5" w="100%" >
                   {PlannedTasks?.map((item)=>(
-                    <Task page="Dashboard" title={item?.name} subitens={item?.Subtasks?.length} subtitle={item?.Projects?.name?.toUpperCase()} />
+                    <Task page="Dashboard" title={item?.name} route={`/task/${item?.Projects?.id}/${item?.id}`} subitens={item?.Subtasks?.length} subtitle={item?.Projects?.name?.toUpperCase()} />
                   ))}  
                 </VStack>
                 
@@ -102,7 +106,7 @@ const Dashboard = () => {
             <CardBody overflowY="scroll" maxH="25rem" minH="25rem" >
                 <VStack spacing="5" w="100%" >
                 {InProgessTasks?.map((item)=>(
-                    <Task page="Dashboard" title={item?.name} subitens={item?.Subtasks?.length} subtitle={item?.Projects?.name?.toUpperCase()} />
+                    <Task page="Dashboard" title={item?.name} route={`/task/${item?.Projects?.id}/${item?.id}`} subitens={item?.Subtasks?.length} subtitle={item?.Projects?.name?.toUpperCase()} />
                   ))}    
                 </VStack>
                 
@@ -116,7 +120,7 @@ const Dashboard = () => {
             <CardBody overflowY="scroll" maxH="25rem" minH="25rem" >
                 <VStack spacing="5" w="100%" >
                 {CompleteTasks?.map((item)=>(
-                    <Task page="Dashboard" title={item?.name} subitens={item?.Subtasks?.length} subtitle={item?.Projects?.name?.toUpperCase()} />
+                    <Task page="Dashboard" title={item?.name} route={`/task/${item?.Projects?.id}/${item?.id}`} subitens={item?.Subtasks?.length} subtitle={item?.Projects?.name?.toUpperCase()} />
                   ))}   
                 </VStack>
                 

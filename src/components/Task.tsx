@@ -1,4 +1,5 @@
 import { Flex, Square, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 interface Props{
     title?: string;
@@ -6,9 +7,12 @@ interface Props{
     subitens?: number;
     page?: "Dashboard" | "Project" | "Task"
     status?: string;
+    route?: string;
 }
 
 const Task = (props: Props) => {
+
+    const navigate = useNavigate();
 
     const statusColor = (status: string) => {
         switch(status){
@@ -27,7 +31,7 @@ const Task = (props: Props) => {
                 {props.subitens}
             </Square>
             <Flex flexDirection="column" >
-                <Text fontSize={props.page === "Dashboard" || props.page === "Project" ? "md" : "xl"} w="12rem" mb="1" fontWeight="semibold" >{props.title}</Text>
+                <Text cursor="pointer" onClick={()=>navigate(props.route as string)} fontSize={props.page === "Dashboard" || props.page === "Project" ? "md" : "xl"} w="20rem" mb="1" fontWeight="semibold" >{props.title}</Text>
                 {props.page != "Dashboard" && <Text fontSize="xs" fontWeight="bold" mb={props.page === "Task" ? "5" : "0"} color={statusColor(props?.status as string)} >{props?.status}</Text>}
                 <Text fontSize={props.page === "Project" || props.page === "Task" ? "md" : "xs"} fontWeight={props.page === "Project" || props.page === "Task" ? "normal" : "bold"} color={props.page === "Task" ? "black" : "rgb(111, 110, 119)"} >{props.subtitle}</Text>
             </Flex>

@@ -55,12 +55,12 @@ const Main = () => {
                     <Flex w="100%" justifyContent="space-between" >
                         <HStack spacing="6" >
                             <Flex alignItems="center" cursor="pointer" onClick={()=>navigate("/")} >
-                                <Icon fontSize="xl" mr="2" color="gray.400" as={CgMenuLeftAlt} />
-                                <Text fontSize="xs" color="#6f6e77" fontWeight="bold" >ROADMAP</Text>
+                                <Icon fontSize="xl" mr="2" color={location.pathname === "/" ? "#4945ff" : "gray.400"} as={CgMenuLeftAlt} />
+                                <Text fontSize="xs" color={location.pathname === "/" ? "#4945ff" : "#6f6e77"} fontWeight="bold" >ROADMAP</Text>
                             </Flex>
                             <Flex alignItems="center" >
-                                <Icon fontSize="xl" mr="2" color="gray.400" as={GiDeskLamp} />
-                                <Text fontSize="xs" color="#6f6e77" fontWeight="bold" >{currentPage()}</Text>
+                                <Icon fontSize="xl" mr="2" color={location.pathname != "/" ? "#4945ff" : "gray.400"} as={GiDeskLamp} />
+                                <Text fontSize="xs" color={location.pathname != "/" ? "#4945ff" : "#6f6e77"} fontWeight="bold" >{currentPage()}</Text>
                             </Flex>
                         </HStack>
                         <Flex alignItems="center" >
