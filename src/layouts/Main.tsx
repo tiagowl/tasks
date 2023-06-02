@@ -27,6 +27,12 @@ const Main = () => {
         }
     }
 
+    const navigateProject = () => {
+        if(location.pathname != "/"){
+            navigate(`/project/${project?.id}`);
+        }
+    }
+
 
     const currentPage = () => {
         if(location.pathname === "/"){
@@ -58,7 +64,7 @@ const Main = () => {
                                 <Icon fontSize="xl" mr="2" color={location.pathname === "/" ? "#4945ff" : "gray.400"} as={CgMenuLeftAlt} />
                                 <Text fontSize="xs" color={location.pathname === "/" ? "#4945ff" : "#6f6e77"} fontWeight="bold" >ROADMAP</Text>
                             </Flex>
-                            <Flex alignItems="center" >
+                            <Flex alignItems="center" cursor={location.pathname == "/" ? "default" : "pointer"} onClick={navigateProject} >
                                 <Icon fontSize="xl" mr="2" color={location.pathname != "/" ? "#4945ff" : "gray.400"} as={GiDeskLamp} />
                                 <Text fontSize="xs" color={location.pathname != "/" ? "#4945ff" : "#6f6e77"} fontWeight="bold" >{currentPage()}</Text>
                             </Flex>
